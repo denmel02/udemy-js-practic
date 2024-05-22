@@ -10,9 +10,14 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   initModals: () => (/* reexport safe */ _modals__WEBPACK_IMPORTED_MODULE_0__.initModals)
+/* harmony export */   modals: () => (/* reexport module object */ _modals__WEBPACK_IMPORTED_MODULE_0__),
+/* harmony export */   tabs: () => (/* reexport module object */ _tabs__WEBPACK_IMPORTED_MODULE_1__)
 /* harmony export */ });
 /* harmony import */ var _modals__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modals */ "./src/js/modules/modals.js");
+/* harmony import */ var _tabs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tabs */ "./src/js/modules/tabs.js");
+
+
+
 
 
 /***/ }),
@@ -26,47 +31,87 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   initModals: () => (/* binding */ initModals)
+/* harmony export */   initModal: () => (/* binding */ initModal),
+/* harmony export */   openModalByDelay: () => (/* binding */ openModalByDelay)
 /* harmony export */ });
-const initModals = () => {
-  const openModal = modalSelector => {
-    const modal = document.querySelector(modalSelector);
-    modal.style.display = 'block';
-    document.body.style.overflow = 'hidden';
-  };
-  const openModalByDelay = (modalSelector, delay = 60000) => {
-    setTimeout(() => openModal(modalSelector), delay);
-  };
-  const closeModal = modalSelector => {
-    const modal = document.querySelector(modalSelector);
-    modal.style.display = 'none';
-    document.body.style.overflow = '';
-  };
-  const bindModal = (triggerSelector, modalSelector, closeSelector) => {
-    const triggers = document.querySelectorAll(triggerSelector);
-    const modal = document.querySelector(modalSelector);
-    const close = document.querySelector(closeSelector);
-    triggers.forEach(trigger => {
-      trigger.addEventListener('click', event => {
-        if (event.target) {
-          event.preventDefault();
-        }
-        openModal(modalSelector);
-      });
-    });
-    modal.addEventListener('click', event => {
-      if (modal === event.target) {
-        closeModal(modalSelector);
-      }
-    });
-    close.addEventListener('click', () => {
-      closeModal(modalSelector);
-    });
-  };
-  bindModal('.popup_engineer_btn', '.popup_engineer', '.popup_engineer .popup_close');
-  bindModal('.phone_link', '.popup', '.popup .popup_close');
-  openModalByDelay('.popup');
+const openModal = modalSelector => {
+  const modal = document.querySelector(modalSelector);
+  modal.style.display = 'block';
+  document.body.style.overflow = 'hidden';
 };
+const openModalByDelay = (modalSelector, delay = 60000) => {
+  setTimeout(() => openModal(modalSelector), delay);
+};
+const closeModal = modalSelector => {
+  const modal = document.querySelector(modalSelector);
+  modal.style.display = 'none';
+  document.body.style.overflow = '';
+};
+const initModal = (triggerSelector, modalSelector, closeSelector) => {
+  const triggers = document.querySelectorAll(triggerSelector);
+  const modal = document.querySelector(modalSelector);
+  const close = document.querySelector(closeSelector);
+  triggers.forEach(trigger => {
+    trigger.addEventListener('click', event => {
+      if (event.target) {
+        event.preventDefault();
+      }
+      openModal(modalSelector);
+    });
+  });
+  modal.addEventListener('click', event => {
+    if (modal === event.target) {
+      closeModal(modalSelector);
+    }
+  });
+  close.addEventListener('click', () => {
+    closeModal(modalSelector);
+  });
+};
+
+
+/***/ }),
+
+/***/ "./src/js/modules/tabs.js":
+/*!********************************!*\
+  !*** ./src/js/modules/tabs.js ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   initTabs: () => (/* binding */ initTabs)
+/* harmony export */ });
+const initTabs = (headerSelector, tabSelector, contentSelector, showClass) => {
+  const header = document.querySelector(headerSelector);
+  const tabs = document.querySelectorAll(tabSelector);
+  const contents = document.querySelectorAll(contentSelector);
+  console.log(header, tabs, contents);
+  const resetTabs = () => {
+    tabs.forEach(tab => tab.classList.remove(showClass));
+    contents.forEach(content => {
+      content.style.display = 'none';
+    });
+  };
+  const showTab = (index = 0) => {
+    const tabs = document.querySelectorAll(tabSelector);
+    const contents = document.querySelectorAll(contentSelector);
+    tabs[index].classList.add(showClass);
+    contents[index].style.display = 'block';
+  };
+  ;
+  header.addEventListener('click', event => {
+    const index = [...tabs].findIndex(tab => tab.contains(event.target));
+    if (index !== -1) {
+      resetTabs();
+      showTab(index);
+    }
+  });
+  resetTabs();
+  showTab();
+};
+
 
 /***/ }),
 
@@ -13985,7 +14030,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 document.addEventListener('DOMContentLoaded', () => {
-  (0,_modules__WEBPACK_IMPORTED_MODULE_1__.initModals)();
+  _modules__WEBPACK_IMPORTED_MODULE_1__.modals.initModal('.popup_engineer_btn', '.popup_engineer', '.popup_engineer .popup_close');
+  _modules__WEBPACK_IMPORTED_MODULE_1__.modals.initModal('.phone_link', '.popup', '.popup .popup_close');
+  _modules__WEBPACK_IMPORTED_MODULE_1__.modals.openModalByDelay('.popup');
+  _modules__WEBPACK_IMPORTED_MODULE_1__.tabs.initTabs('.glazing_slider', '.glazing_block', '.glazing_content', 'active');
+  _modules__WEBPACK_IMPORTED_MODULE_1__.tabs.initTabs('.decoration_slider', '.decoration_item > div', '.decoration_content > div > div', 'after_click');
 });
 })();
 
