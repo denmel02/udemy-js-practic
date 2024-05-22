@@ -2,8 +2,6 @@ const initTabs = (headerSelector, tabSelector, contentSelector, showClass) => {
     const header = document.querySelector(headerSelector);
     const tabs = document.querySelectorAll(tabSelector);
     const contents = document.querySelectorAll(contentSelector);
-
-    console.log(header, tabs, contents)
     const resetTabs = () => {
         tabs.forEach((tab) => tab.classList.remove(showClass));
         contents.forEach((content) => {
